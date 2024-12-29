@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   state_mgr:
     path: ../../state_mgr
+  modules:
+    path: ../../modules/src
 
 
   # The following adds the Cupertino Icons font to your application.

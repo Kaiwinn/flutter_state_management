@@ -1,3 +1,7 @@
+import 'package:example/models/todo_state.dart';
+import 'package:state_mgr/state_mgr.dart';
+import 'package:modules/modules.dart';
+
 class TodoStore extends StateStore<TodoState> {
   TodoStore() : super(TodoState());
 
@@ -6,7 +10,7 @@ class TodoStore extends StateStore<TodoState> {
 
     await updateAsync(() async {
       try {
-        await Future.delayed(Duration(seconds: 1)); // FAKE API CALL
+        await Future.delayed(const Duration(seconds: 1)); // FAKE API CALL
         final todos = [
           Todo(id: '1', title: 'Test State Manager'),
           Todo(id: '2', title: 'Write Documentation'),
@@ -27,6 +31,21 @@ class TodoStore extends StateStore<TodoState> {
       return state.copyWith(
         todos: [...state.todos, newTodo],
       );
+    });
+  }
+   void toggleTodo(String id) {
+    updatePartial((state) {
+      final newTodos = state.todos.map((todo) {
+        if (todo.id == id) {
+          return Todo(
+            id: todo.id,
+            title: todo.title,
+            completed: !todo.completed,
+          );
+        }
+        return todo;
+      }).toList();
+      return state.copyWith(todos: newTodos);
     });
   }
 }
