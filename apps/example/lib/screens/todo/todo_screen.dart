@@ -1,4 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:example/models/todo_state.dart';
+import 'package:example/screens/todo/widgets/todo_item.dart';
 import 'package:example/stores/todo_store.dart';
 import 'package:flutter/material.dart';
 import 'package:state_mgr/state_mgr.dart';
@@ -8,6 +10,13 @@ class TodoScreen extends StatelessWidget {
   final _textController = TextEditingController();
 
   TodoScreen({super.key});
+
+  bool _shouldRebuild(TodoState previous, TodoState current) {
+    return previous.todos.length != current.todos.length ||
+          previous.isLoading != current.isLoading ||
+          previous.error != current.error ||
+          !const ListEquality().equals(previous.todos, current.todos);
+  }
 
   void _showAddDialog(BuildContext context) {
     showDialog(
@@ -52,40 +61,26 @@ class TodoScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Todos')),
       body: StateBuilder<TodoState>(
         store: todoStore,
+        shouldRebuild: _shouldRebuild,
         builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state.todos.isEmpty) {
-            return const Center(
-              child: Text('No todos yet. Click + to add one!'),
-            );
-          }
-
           return ListView.builder(
             itemCount: state.todos.length,
             itemBuilder: (context, index) {
               final todo = state.todos[index];
-              return ListTile(
-                title: Text(todo.title),
-                leading: Checkbox(
-                  value: todo.completed,
-                  onChanged: (_) => todoStore.toggleTodo(todo.id),
-                ),
+              return TodoItem(
+                key: ValueKey(todo.id),
+                todo: todo,
+                onToggle: () => todoStore.toggleTodo(todo.id),
               );
             },
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showAddDialog(context),
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+    onPressed: () => _showAddDialog(context),
+    child: const Icon(Icons.add),
+  ),
 
-  void dispose() {
-    _textController.dispose();
+    );
   }
 }

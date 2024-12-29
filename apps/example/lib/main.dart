@@ -1,5 +1,5 @@
 import 'package:example/screens/counter/counter_screen.dart';
-import 'package:example/screens/todo_screen.dart';
+import 'package:example/screens/todo/todo_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

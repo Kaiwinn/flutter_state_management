@@ -34,6 +34,7 @@ dependencies:
     path: ../../state_mgr
   modules:
     path: ../../modules/src
+  collection: ^1.17.0
 
 
   # The following adds the Cupertino Icons font to your application.
