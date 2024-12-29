@@ -1,4 +1,4 @@
-# flutter_state_management
+# example
 
 A new Flutter project.
 
