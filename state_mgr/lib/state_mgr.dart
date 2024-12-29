@@ -1,7 +1,5 @@
 library state_mgr;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/base/state_base.dart';
+export 'src/base/store_base.dart';
+export 'src/store/state_store.dart';
